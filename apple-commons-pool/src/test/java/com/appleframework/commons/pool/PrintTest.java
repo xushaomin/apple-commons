@@ -7,13 +7,19 @@ public class PrintTest {
 	
 	public static void main(String[] args) {
 		
-		for (int i = 0; i < 10000; i++) {
-			PrintTask task = new PrintTask();			
+		for (int i = 0; i < 100000000; i++) {
 			IPrint print = new PrintImpl();
 			print.setMessage(i + "");
+			
+			PrintTask task = new PrintTask();
 			task.setTask(print);
+			task.setThreadCnt(5);
 			CommonTaskManager.getInstance().addTask(task);
 			
+			DemoTask task1 = new DemoTask();
+			task1.setTask(print);
+			task1.setThreadCnt(5);
+			CommonTaskManager.getInstance().addTask(task1);
 		}
 	}
 }
