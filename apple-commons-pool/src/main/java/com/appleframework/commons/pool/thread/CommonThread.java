@@ -10,18 +10,15 @@ public class CommonThread extends Thread {
 	
 	private CommonQueue queue;
 
-	private CommonTask task;
-
 	@Override
 	public void run() {
-
 		while (true) {
 			try {
 				doWait();
-				//logger.info(" que size:" + queue.getSize() );
+				logger.info(" que size:" + queue.getSize() );
 				while (queue.getSize() > 0) {
 					logger.info("----------do task -----------");
-					task = (CommonTask) queue.removeFirst();
+					CommonTask task = (CommonTask) queue.removeFirst();
 					if (null != task) {
 						task.doTask();
 					}
@@ -31,13 +28,12 @@ public class CommonThread extends Thread {
 				logger.error(e);
 			}
 		}
-
 	}
 
 	public synchronized void doWait() {
 		try {
 			this.wait(10*1000);
-			//logger.info("----------wake up -----------");
+			logger.info("----------wake up -----------");
 		} catch (IllegalMonitorStateException ie) {
 			logger.error(ie.getMessage());
 		} catch (Exception e) {
@@ -62,14 +58,6 @@ public class CommonThread extends Thread {
 
 	public void setQueue(CommonQueue queue) {
 		this.queue = queue;
-	}
-
-	public CommonTask getTask() {
-		return task;
-	}
-
-	public void setTask(CommonTask task) {
-		this.task = task;
 	}
 
 }

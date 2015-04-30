@@ -5,7 +5,7 @@ import java.util.*;
 public class CommonQueue {
 	
 	protected List<Object> list = new Vector<Object>();
-	protected int size = 0;
+	//protected int size = 0;
 	private int threadCnt = 10;
     private String queueName = "";    
     

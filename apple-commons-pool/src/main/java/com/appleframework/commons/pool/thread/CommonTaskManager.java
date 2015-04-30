@@ -17,37 +17,15 @@ public class CommonTaskManager {
 		@Override
 		public synchronized void run(){
 			try{
-				while( true ){
-					/*
-					Iterator<?> it = queueMap.keySet().iterator();
-					while( it.hasNext() ){
-						String key = (String)it.next();
-						
-						CommonQueue q = (CommonQueue) queueMap.get( key );
-						logger.info("===key:" + key + "  size:" + q.getSize());
-						if( q.getSize() > 0 ){
-							//啟動一个执行任務的线程
-							logger.info(" que size:" + q.getSize() );
-							CommonThread thread = CommonThreadPool.getInstance().getThread( q );
-							if( thread != null ){
-								//激活线程
-								logger.info("-------active thread to run------id:" + thread.getId());
-								thread.doNotify();
-							}
-						}
-					}
-					logger.info("------task threard check run----");
-					this.wait(1000);
-					*/
-					
+				while( true ){					
 					for (Map.Entry<String, CommonQueue> entry : queueMap.entrySet()) {
 						String key = (String) entry.getKey();
-						CommonQueue q = (CommonQueue) queueMap.get(key);
-						logger.info("===key:" + key + "  size:" + q.getSize());
-						if (q.getSize() > 0) {
+						CommonQueue queue = (CommonQueue) queueMap.get(key);
+						logger.info("===key:" + key + "  size:" + queue.getSize());
+						if (queue.getSize() > 0) {
 							// 啟動一个执行任務的线程
-							logger.info(" que size:" + q.getSize());
-							CommonThread thread = CommonThreadPool.getInstance().getThread(q);
+							logger.info(" queue size:" + queue.getSize());
+							CommonThread thread = CommonThreadPool.getInstance().getThread(queue);
 							if (thread != null) {
 								// 激活线程
 								logger.info("-------active thread to run------id:" + thread.getId());
@@ -82,34 +60,16 @@ public class CommonTaskManager {
 	 * @param task
 	 */
 	public synchronized void addTask(CommonTask task){
-		CommonQueue q = (CommonQueue)queueMap.get( task.getClass().getName() );
-		if( q == null ){
-			q = new CommonQueue();
-			q.setQueueName(task.getClass().getName());
-			q.setThreadCnt( task.getThreadCnt() );
-			queueMap.put(task.getClass().getName(), q);
+		String taskClassName = task.getClass().getName();
+		logger.info("------add task class name: " + taskClassName);
+		CommonQueue queue = (CommonQueue)queueMap.get(taskClassName);
+		if(null == queue){
+			queue = new CommonQueue();
+			queue.setQueueName(taskClassName);
+			queue.setThreadCnt(task.getThreadCnt());
+			queueMap.put(taskClassName, queue);
 		}
-		q.add( task );
-		/*
-		//如果取到线程就立即执行，否则扔到队列
-		try{
-			SheThread thread = ThreadPool.getInstance().getThread( task );
-			if( thread == null){
-				logger.info("--------get thread null ----");
-				q.add( task );
-			}
-			else{
-				logger.info("--------get thread ok ----");
-				thread.setTask( task );
-				thread.setQueue(q);
-				//thread.start();
-				//thread.notify();
-			}
-		}
-		catch( Exception e ){
-			q.add( task );
-		}
-		*/
+		queue.add( task );
 	}
 	/**
 	 * 创建执行任务的线程
