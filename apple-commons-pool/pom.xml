@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>apple-commons</artifactId>
 		<groupId>com.appleframework.commons</groupId>
-		<version>0.0.1.RELEASE</version>
+		<version>0.0.2.RELEASE</version>
 	</parent>
 	<artifactId>apple-commons-pool</artifactId>
 	<name>apple-commons-pool</name>
@@ -18,13 +18,11 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.8.1</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
-			<version>${log4j.version}</version>
 		</dependency>
 	</dependencies>
 </project>
